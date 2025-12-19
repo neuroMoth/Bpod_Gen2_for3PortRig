@@ -836,10 +836,10 @@ set(BpodSystem.GUIHandles.CurrentStateDisplay, 'String', '---');
 set(BpodSystem.GUIHandles.PreviousStateDisplay, 'String', '---');
 set(BpodSystem.GUIHandles.LastEventDisplay, 'String', '---');
 set(BpodSystem.GUIHandles.TimeDisplay, 'String', '0:00:00');
-if sum(BpodSystem.InputsEnabled(BpodSystem.HW.Inputs == 'P')) == 0
-    warning(['All Bpod behavior ports are currently disabled.'... 
-             'If your protocol requires behavior ports, enable them from the settings menu.'])
-end
+% if sum(BpodSystem.InputsEnabled(BpodSystem.HW.Inputs == 'P')) == 0
+%     warning(['All Bpod behavior ports are currently disabled.'... 
+%              'If your protocol requires behavior ports, enable them from the settings menu.'])
+% end
 run(protocolPath);
 
 function outputString = spaces2underscores(inputString)

@@ -75,7 +75,7 @@ switch lower(op)
         CalibrationFilePath = fullfile(BpodSystem.Path.LocalDir, 'Calibration Files', 'LiquidCalibration.mat');
         load(CalibrationFilePath);
         BpodSystem.PluginObjects.LiquidCal.CalData = LiquidCal;
-        BpodSystem.PluginObjects.LiquidCal.CalibrationTargetRange = [2 10];
+        BpodSystem.PluginObjects.LiquidCal.CalibrationTargetRange = [2 40];
         DisplayValve;
         
     case 'getvalvetimes'
@@ -185,6 +185,7 @@ if ~isempty(p)
     MaxPending = max(PendingMeasurements) + min(ValveData(ValveToShow).Table(:,1));
     MaxPlotX = max([MaxPlot MaxPending]);
     set(BpodSystem.GUIHandles.LiquidCalibrator.CalibrationCurveAxes, 'XLim', [0 MaxPlotX]);
+    set(BpodSystem.GUIHandles.LiquidCalibrator.CalibrationCurveAxes, 'xtick', 0:25:MaxPlotX);
     set(get(BpodSystem.GUIHandles.LiquidCalibrator.CalibrationCurveAxes, 'Ylabel'), 'String', 'Liquid (ul)', 'fontsize', 14, 'color', [1 1 1]);
     set(get(BpodSystem.GUIHandles.LiquidCalibrator.CalibrationCurveAxes, 'Xlabel'), 'String', 'Valve duration (ms)', 'fontsize', 14, 'color', [1 1 1]);
     hold(BpodSystem.GUIHandles.LiquidCalibrator.CalibrationCurveAxes, 'off');
@@ -561,9 +562,9 @@ end
 nValidMeasurements = length(ValveIDs);
 if ~isempty(ValveIDs)
     % Deliver liquid
-    k = msgbox('Please refill liquid reservoirs and click Ok to begin.', 'modal');
-    waitfor(k);
-    Completed = RunRewardCal(str2double(get(BpodSystem.GUIHandles.LiquidCalibrator.nPulsesEdit, 'string')), ValveIDs, PulseDurations, .2);
+    % k = msgbox('Please refill liquid reservoirs and click Ok to begin.', 'modal');
+    % waitfor(k);
+    Completed = RunRewardCal(str2double(get(BpodSystem.GUIHandles.LiquidCalibrator.nPulsesEdit, 'string')), ValveIDs, PulseDurations, .4);
     if Completed
         % Enter measurements:
         
@@ -582,7 +583,7 @@ if ~isempty(ValveIDs)
         BpodSystem.GUIHandles.LiquidCalibrator.CB7b = uicontrol('Style', 'edit', 'Position', [155 121 80 35], 'TooltipString', 'Enter liquid weight for valve 7', 'FontWeight', 'bold', 'FontSize', 12, 'BackgroundColor', [.9 .9 .9]);
         BpodSystem.GUIHandles.LiquidCalibrator.CB8b = uicontrol('Style', 'edit', 'Position', [155 78 80 35], 'TooltipString', 'Enter liquid weight for valve 8', 'FontWeight', 'bold', 'FontSize', 12, 'BackgroundColor', [.9 .9 .9]);
         MeasurementButtonGFX2 = imread('MeasurementEntryOkButtonBG.bmp');
-        BpodSystem.GUIHandles.LiquidCalibrator.EnterMeasurementButton2 = uicontrol('Style', 'pushbutton', 'String', '', 'Position', [120 7 80 50], 'Callback', @AddCalMeasurements, 'TooltipString', 'Enter measurement', 'CData', MeasurementButtonGFX2);
+        BpodSystem.GUIHandles.LiquidCalibrator.Enter2Button2 = uicontrol('Style', 'pushbutton', 'String', '', 'Position', [120 7 80 50], 'Callback', @AddCalMeasurements, 'TooltipString', 'Enter measurement', 'CData', MeasurementButtonGFX2);
         
         % Prompt for each valid measurement in order, un-hiding the GUI box and
         % displaying a cursor triangle on the correct row
@@ -615,41 +616,48 @@ for x = 1:length(PulseDurations)
         PulseDurations(x) = 0;
     end
 end
-
+%% Hijacked here - line 618
 progressbar;
-sma = NewStateMatrix();
+%sma = NewStateMatrix();
 for y = 1:nValves
-    sma = AddState(sma, 'Name', ['PulseValve' num2str(TargetValves(y))], ...
-        'Timer', PulseDurations(y),...
-        'StateChangeConditions', ...
-        {'Tup', ['Delay' num2str(y)]},...
-        'OutputActions', {'ValveState', ValvePhysicalAddress(TargetValves(y))});
-    if y < nValves
-        sma = AddState(sma, 'Name', ['Delay' num2str(y)], ...
-            'Timer', PulseInterval,...
-            'StateChangeConditions', ...
-            {'Tup', ['PulseValve' num2str(TargetValves(y+1))]},...
-            'OutputActions', {});
-    else
-        sma = AddState(sma, 'Name', ['Delay' num2str(y)], ...
-            'Timer', PulseInterval,...
-            'StateChangeConditions', ...
-            {'Tup', 'exit'},...
-            'OutputActions', {});
+    for x = 1:nPulses
+        progressbar(x/nPulses)
+        Manual_Open_Valve(1, TargetValves(y), PulseDurations*1000)
+        pause(PulseInterval);
     end
+
+    %    sma = AddState(sma, 'Name', ['PulseValve' num2str(TargetValves(y))], ...
+    %        'Timer', PulseDurations(y),...
+    %        'StateChangeConditions', ...
+    %        {'Tup', ['Delay' num2str(y)]},...
+    %        'OutputActions', {'ValveState', ValvePhysicalAddress(TargetValves(y))});
+    %    if y < nValves
+    %        sma = AddState(sma, 'Name', ['Delay' num2str(y)], ...
+    %            'Timer', PulseInterval,...
+    %            'StateChangeConditions', ...
+    %            {'Tup', ['PulseValve' num2str(TargetValves(y+1))]},...
+    %            'OutputActions', {});
+    %    else
+    %        sma = AddState(sma, 'Name', ['Delay' num2str(y)], ...
+    %            'Timer', PulseInterval,...
+    %            'StateChangeConditions', ...
+    %            {'Tup', 'exit'},...
+    %            'OutputActions', {});
+    %    end
 end
-SendStateMatrix(sma);
-for x = 1:nPulses
-    progressbar(x/nPulses)
-    if BpodSystem.EmulatorMode == 0
-        RunStateMatrix;
-        pause(.5);
-    end
-    if BpodSystem.Status.BeingUsed == 0
-        progressbar(1);
-        return
-    end
-end
+%SendStateMatrix(sma);
+% Here modified by RV -
+% for x = 1:nPulses
+%
+%     %if BpodSystem.EmulatorMode == 0
+%     %    RunStateMatrix;
+%     %    pause(.5);
+%     %end  
+%     %if BpodSystem.Status.BeingUsed == 0
+%     %    progressbar(1);
+%     %    return
+%     %end
+% end
 Completed = 1;
 BpodSystem.Status.BeingUsed = 0;
 
@@ -736,7 +744,7 @@ if AllValid == 1
     LiquidCal(1).LastDateModified = now;
     save(SavePath, 'LiquidCal');
     BpodSystem.CalibrationTables.LiquidCal = LiquidCal;
-    msgbox('Calibration files updated.', 'modal')
+    %msgbox('Calibration files updated.', 'modal')
     close(BpodSystem.GUIHandles.LiquidCalibrator.RunMeasurementsFig);
     DisplayValve;
 end
