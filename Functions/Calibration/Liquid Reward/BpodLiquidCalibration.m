@@ -772,30 +772,30 @@ BpodSystem.GUIHandles.LiquidCalibrator.CB7b = uicontrol('Style', 'checkbox', 'Po
 BpodSystem.GUIHandles.LiquidCalibrator.CB8b = uicontrol('Style', 'checkbox', 'Position', [375 535 15 15], 'TooltipString', 'Test valve 8');
 
 if ~isempty(BpodSystem.PluginObjects.LiquidCal.CalData(1).Table);
-    set(BpodSystem.GUIHandles.LiquidCalibrator.CB1b, 'Value', 1);
+    set(BpodSystem.GUIHandles.LiquidCalibrator.CB1b, 'Value', 0);
 end
 if ~isempty(BpodSystem.PluginObjects.LiquidCal.CalData(2).Table);
-    set(BpodSystem.GUIHandles.LiquidCalibrator.CB2b, 'Value', 1);
+    set(BpodSystem.GUIHandles.LiquidCalibrator.CB2b, 'Value', 0);
 end
 if ~isempty(BpodSystem.PluginObjects.LiquidCal.CalData(3).Table);
-    set(BpodSystem.GUIHandles.LiquidCalibrator.CB3b, 'Value', 1);
+    set(BpodSystem.GUIHandles.LiquidCalibrator.CB3b, 'Value', 0);
 end
 if ~isempty(BpodSystem.PluginObjects.LiquidCal.CalData(4).Table);
-    set(BpodSystem.GUIHandles.LiquidCalibrator.CB4b, 'Value', 1);
+    set(BpodSystem.GUIHandles.LiquidCalibrator.CB4b, 'Value', 0);
 end
 if ~isempty(BpodSystem.PluginObjects.LiquidCal.CalData(5).Table);
-    set(BpodSystem.GUIHandles.LiquidCalibrator.CB5b, 'Value', 1);
+    set(BpodSystem.GUIHandles.LiquidCalibrator.CB5b, 'Value', 0);
 end
 if ~isempty(BpodSystem.PluginObjects.LiquidCal.CalData(6).Table);
-    set(BpodSystem.GUIHandles.LiquidCalibrator.CB6b, 'Value', 1);
+    set(BpodSystem.GUIHandles.LiquidCalibrator.CB6b, 'Value', 0);
 end
 if ~isempty(BpodSystem.PluginObjects.LiquidCal.CalData(7).Table);
-    set(BpodSystem.GUIHandles.LiquidCalibrator.CB7b, 'Value', 1);
+    set(BpodSystem.GUIHandles.LiquidCalibrator.CB7b, 'Value', 0);
 end
 if ~isempty(BpodSystem.PluginObjects.LiquidCal.CalData(8).Table);
-    set(BpodSystem.GUIHandles.LiquidCalibrator.CB8b, 'Value', 1);
+    set(BpodSystem.GUIHandles.LiquidCalibrator.CB8b, 'Value', 0);
 end
-BpodSystem.GUIHandles.LiquidCalibrator.SpecificAmtEdit = uicontrol('Style', 'edit', 'String', '10', 'Position', [256 478 40 25], 'FontWeight', 'bold', 'FontUnits', 'Pixels', 'FontSize', 16, 'BackgroundColor', [.9 .9 .9]);
+BpodSystem.GUIHandles.LiquidCalibrator.SpecificAmtEdit = uicontrol('Style', 'edit', 'String', '30', 'Position', [256 478 40 25], 'FontWeight', 'bold', 'FontUnits', 'Pixels', 'FontSize', 16, 'BackgroundColor', [.9 .9 .9]);
 BpodSystem.GUIHandles.LiquidCalibrator.nPulsesDropmenu = uicontrol('Style', 'popupmenu', 'String', {'100' '200' '300' '400' '500'}, 'Position', [289 447 50 25], 'FontWeight', 'bold', 'FontUnits', 'Pixels', 'FontSize', 16, 'BackgroundColor', [.9 .9 .9], 'TooltipString', 'Use more pulses with small water volumes for improved accuracy');
 BpodSystem.GUIHandles.LiquidCalibrator.ToleranceDropmenu = uicontrol('Style', 'popupmenu', 'String', {'5' '10'}, 'Position', [289 416 50 25], 'FontWeight', 'bold', 'FontUnits', 'Pixels', 'FontSize', 16, 'BackgroundColor', [.9 .9 .9], 'TooltipString', 'Percent of intended amount by which measured amount can differ');
 BpodSystem.GUIHandles.LiquidCalibrator.ResultsListbox = uicontrol('Style', 'listbox', 'String', {''}, 'Position', [25 28 355 130], 'FontWeight', 'bold', 'FontUnits', 'Pixels', 'FontSize', 15, 'BackgroundColor', [.85 .85 .85], 'SelectionHighlight', 'off');
