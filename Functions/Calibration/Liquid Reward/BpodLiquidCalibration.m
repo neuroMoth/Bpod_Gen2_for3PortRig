@@ -796,7 +796,7 @@ if ~isempty(BpodSystem.PluginObjects.LiquidCal.CalData(8).Table);
     set(BpodSystem.GUIHandles.LiquidCalibrator.CB8b, 'Value', 0);
 end
 BpodSystem.GUIHandles.LiquidCalibrator.SpecificAmtEdit = uicontrol('Style', 'edit', 'String', '30', 'Position', [256 478 40 25], 'FontWeight', 'bold', 'FontUnits', 'Pixels', 'FontSize', 16, 'BackgroundColor', [.9 .9 .9]);
-BpodSystem.GUIHandles.LiquidCalibrator.nPulsesDropmenu = uicontrol('Style', 'popupmenu', 'String', {'100' '200' '300' '400' '500'}, 'Position', [289 447 50 25], 'FontWeight', 'bold', 'FontUnits', 'Pixels', 'FontSize', 16, 'BackgroundColor', [.9 .9 .9], 'TooltipString', 'Use more pulses with small water volumes for improved accuracy');
+BpodSystem.GUIHandles.LiquidCalibrator.nPulsesDropmenu = uicontrol('Style', 'popupmenu', 'String', {'50' '100' '200' '300' '400' '500'}, 'Position', [289 447 50 25], 'FontWeight', 'bold', 'FontUnits', 'Pixels', 'FontSize', 16, 'BackgroundColor', [.9 .9 .9], 'TooltipString', 'Use more pulses with small water volumes for improved accuracy');
 BpodSystem.GUIHandles.LiquidCalibrator.ToleranceDropmenu = uicontrol('Style', 'popupmenu', 'String', {'5' '10'}, 'Position', [289 416 50 25], 'FontWeight', 'bold', 'FontUnits', 'Pixels', 'FontSize', 16, 'BackgroundColor', [.9 .9 .9], 'TooltipString', 'Percent of intended amount by which measured amount can differ');
 BpodSystem.GUIHandles.LiquidCalibrator.ResultsListbox = uicontrol('Style', 'listbox', 'String', {''}, 'Position', [25 28 355 130], 'FontWeight', 'bold', 'FontUnits', 'Pixels', 'FontSize', 15, 'BackgroundColor', [.85 .85 .85], 'SelectionHighlight', 'off');
 
@@ -850,12 +850,13 @@ if InvalidParams == 0
     % Convert liquid amount to pulse duration using current table
     PulseDurations = BpodLiquidCalibration('GetValveTimes', LiquidAmount, TargetValves);
     % Figure out how many pulses to deliver
-    nPulses = get(BpodSystem.GUIHandles.LiquidCalibrator.nPulsesDropmenu, 'Value')*100;
+    nPulseOptions = BpodSystem.GUIHandles.LiquidCalibrator.nPulsesDropmenu.String;
+    nPulses = str2double(nPulseOptions(get(BpodSystem.GUIHandles.LiquidCalibrator.nPulsesDropmenu, 'Value')));
     % Set valve request window
     set(BpodSystem.GUIHandles.LiquidCalibrator.MeasuredValveText, 'String', num2str(TargetValves(1)));
     drawnow;
     % Call calibration script
-    Completed = RunRewardCal(nPulses, TargetValves, PulseDurations, .2);
+    Completed = RunRewardCal(nPulses, TargetValves, PulseDurations, .3);
 else
     warndlg('Invalid settings detected. Check setup.', 'Error', 'modal');
 end
@@ -890,7 +891,8 @@ MeasuredLiquidAmount = get(BpodSystem.GUIHandles.LiquidCalibrator.MeasuredAmtEdi
 if isnan(str2double(MeasuredLiquidAmount))
     InvalidParams = 1;
 end
-nPulses = get(BpodSystem.GUIHandles.LiquidCalibrator.nPulsesDropmenu, 'Value')*100;
+nPulseOptions = BpodSystem.GUIHandles.LiquidCalibrator.nPulsesDropmenu.String;
+nPulses = str2double(nPulseOptions(get(BpodSystem.GUIHandles.LiquidCalibrator.nPulsesDropmenu, 'Value')));
 MeasuredLiquidAmount = str2double(MeasuredLiquidAmount);
 if (MeasuredLiquidAmount < 0) || (MeasuredLiquidAmount > 1000)
     InvalidParams = 1;
