@@ -737,8 +737,8 @@ classdef BpodAnalogIn < handle
             end
             obj.UIhandles.nXDivisions = 12;
             obj.UIhandles.nYDivisions = 8;
-            obj.UIdata.VoltDivPos = 11;
-            obj.UIdata.TimeDivPos = 5;
+            obj.UIdata.VoltDivPos = 10;
+            obj.UIdata.TimeDivPos = 6;
             obj.UIdata.VoltDivValues = [0.002 0.005 0.01 0.02 0.05 0.1 0.2 0.5 1 2 5];
             obj.UIdata.TimeDivValues = [0.01 0.02 0.05 0.1 0.2 0.5 1 2];
             obj.UIdata.nDisplaySamples = obj.SamplingRate * obj.UIdata.TimeDivValues(obj.UIdata.TimeDivPos) *... 
@@ -753,8 +753,8 @@ classdef BpodAnalogIn < handle
                 dropFontSize = 8;
             else
                 titleFontSize = 18;
-                scaleFontSize = 18;
-                subTitleFontSize = 16;
+                scaleFontSize = 14;
+                subTitleFontSize = 12;
                 lineEdge = 0;
                 figHeight = 500;
                 dropFontSize = 10;
@@ -769,7 +769,7 @@ classdef BpodAnalogIn < handle
                 'NumberTitle','off',...
                 'MenuBar','none',...
                 'Color',oscBGColor,...
-                'Position',[100,100,1024,figHeight],...
+                'Position',[2,370,1024,figHeight],...
                 'CloseRequestFcn',@(h,e)obj.endAcq());
             obj.UIhandles.Plot = axes('units','pixels', 'position',[10 10 640 480], ...
                 'box', 'off', 'tickdir', 'out', 'Color', [0.1 0.1 0.1]);
@@ -808,8 +808,8 @@ classdef BpodAnalogIn < handle
             
             obj.UIhandles.MaskLine = line([lineEdge,obj.UIhandles.nXDivisions-lineEdge],[-0.2,-0.2],... 
                                      'Color', [.2 .2 .2], 'LineWidth', 20);
-            obj.UIhandles.VDivText = text(0.2,-0.2, 'V/div: 5.0', 'Color', 'yellow', 'FontName', 'Courier New', 'FontSize', 12);
-            obj.UIhandles.TimeText = text(9.5,-0.2, 'Time 200.0ms', 'Color', 'yellow', 'FontName', 'Courier New', 'FontSize', 12);
+            obj.UIhandles.VDivText = text(0.2,-0.2, 'V/div: 2.0', 'Color', 'yellow', 'FontName', 'Courier New', 'FontSize', 12);
+            obj.UIhandles.TimeText = text(9.5,-0.2, 'Time 500.0ms', 'Color', 'yellow', 'FontName', 'Courier New', 'FontSize', 12);
             obj.UIhandles.StatText = text(0.2,7.7, 'Stopped', 'Color', 'red', 'FontName', 'Courier New', 'FontSize', 12);
             obj.UIhandles.RecStatText = text(10.1,7.7, '', 'Color', 'red', 'FontName', 'Courier New', 'FontSize', 12);
             obj.UIhandles.RunButton = uicontrol('Style', 'pushbutton', 'String', 'RUN', 'Position', [895 390 120 95],...
@@ -851,7 +851,7 @@ classdef BpodAnalogIn < handle
                 'BackgroundColor', oscBGColor, 'FontWeight', 'bold');
             uicontrol('Style', 'text', 'Position', [740 420 140 30], 'String', 'Freq (Hz)', 'FontSize', subTitleFontSize,...
                 'BackgroundColor', oscBGColor, 'FontWeight', 'bold');
-            uicontrol('Style', 'text', 'Position', [653 350 55 30], 'String', 'File:', 'FontSize', titleFontSize,...
+            uicontrol('Style', 'text', 'Position', [653 350 55 30], 'String', 'File:', 'FontSize', subTitleFontSize,...
                 'BackgroundColor', oscBGColor, 'FontWeight', 'bold');
             obj.UIhandles.SFEdit = uicontrol('Style', 'edit', 'Position', [760 390 100 30], 'String',... 
                                              num2str(obj.SamplingRate), 'FontSize', 12,...
