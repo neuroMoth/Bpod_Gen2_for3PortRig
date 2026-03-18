@@ -44,7 +44,7 @@ else
 end
 
 % Create GUI figure + background image
-obj.GUIHandles.MainFig = figure('Position',[80 100 825 400],'name','Bpod Console','numbertitle','off',...
+obj.GUIHandles.MainFig = figure('Position',[775 470 825 400],'name','Bpod Console','numbertitle','off',...
     'MenuBar', 'none', 'Resize', 'off', 'CloseRequestFcn', 'EndBpod');
 obj.GUIHandles.Console = axes('units','normalized', 'position',[0 0 1 1]);
 uistack(obj.GUIHandles.Console,'bottom');
