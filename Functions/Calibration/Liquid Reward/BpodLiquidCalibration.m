@@ -856,7 +856,7 @@ if InvalidParams == 0
     set(BpodSystem.GUIHandles.LiquidCalibrator.MeasuredValveText, 'String', num2str(TargetValves(1)));
     drawnow;
     % Call calibration script
-    Completed = RunRewardCal(nPulses, TargetValves, PulseDurations, .3);
+    Completed = RunRewardCal(nPulses, TargetValves, PulseDurations, .25);
 else
     warndlg('Invalid settings detected. Check setup.', 'Error', 'modal');
 end
