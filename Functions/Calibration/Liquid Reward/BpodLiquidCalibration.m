@@ -564,7 +564,7 @@ if ~isempty(ValveIDs)
     % Deliver liquid
     % k = msgbox('Please refill liquid reservoirs and click Ok to begin.', 'modal');
     % waitfor(k);
-    Completed = RunRewardCal(str2double(get(BpodSystem.GUIHandles.LiquidCalibrator.nPulsesEdit, 'string')), ValveIDs, PulseDurations, .4);
+    Completed = RunRewardCal(str2double(get(BpodSystem.GUIHandles.LiquidCalibrator.nPulsesEdit, 'string')), ValveIDs, PulseDurations, .3);
     if Completed
         % Enter measurements:
         
